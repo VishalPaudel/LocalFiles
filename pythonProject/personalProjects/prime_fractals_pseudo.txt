@@ -1,0 +1,127 @@
+# -*- coding: utf-8 -*-
+
+
+
+from matplotlib IMPORT pyplot as plt
+
+
+
+SET n TO 14
+
+
+
+SET num_size TO 2 * n + 1
+
+
+
+
+
+DEFINE FUNCTION prime_fractal(temp_num_rows: int, temp_int_base: int):\
+
+
+
+    """
+
+    This replicates the MATLAB function zeros, but IN our context of THE fractal
+
+    :param temp_num_rows: The number of rows you want IN your fractal
+
+    :param temp_int_base: The base IN which you want the fractal
+
+    :RETURN: temp_main_lst: a list of lists containing zeros
+
+    """
+
+
+
+    SET temp_main_lst TO []
+
+
+
+    SET temp_num_columns TO 2 * temp_num_rows - 1
+
+
+
+    FOR row_index IN range(0, temp_num_rows):
+
+        temp_main_lst.append([])
+
+
+
+        FOR column_index IN range(0, temp_num_columns):
+
+            temp_main_lst[row_index].append(0)
+
+
+
+    FOR row_index IN range(0, temp_num_rows):
+
+
+
+        IF row_index EQUALS 0:
+
+            SET temp_main_lst[row_index][temp_num_rows - 1] TO 1
+
+        ELSE:
+
+            FOR column_index IN range(0, temp_num_columns):
+
+
+
+                IF column_index EQUALS 0:
+
+                    SET left_val TO 0
+
+                    SET right_val TO temp_main_lst[row_index - 1][column_index + 1]
+
+
+
+                    SET temp_main_lst[row_index][column_index] TO right_val + left_val
+
+
+
+                ELSEIF column_index EQUALS temp_num_columns - 1:
+
+                    SET left_val TO temp_main_lst[row_index - 1][column_index - 1]
+
+                    SET right_val TO 0
+
+
+
+                    SET temp_main_lst[row_index][column_index] TO right_val + left_val
+
+
+
+                ELSE:
+
+                    SET left_val TO temp_main_lst[row_index - 1][column_index - 1]
+
+                    SET right_val TO temp_main_lst[row_index - 1][column_index + 1]
+
+
+
+                    SET temp_main_lst[row_index][column_index] TO right_val + left_val
+
+
+
+    FOR row_index IN range(0, temp_num_rows):
+
+
+
+        FOR column_index IN range(0, temp_num_columns):
+
+
+
+            temp_main_lst[row_index][column_index] %= temp_int_base
+
+
+
+    RETURN temp_main_lst
+
+
+
+
+
+plt.imshow(prime_fractal(int(INPUT("Enter the size: ")), int(INPUT("Input base: "))), interpolation='nearest')
+
+plt.show()
